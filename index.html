@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>game-module-windows</title>
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self' zj-file: http://localhost:5173;
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:5173 zj-file:;
+      style-src 'self' 'unsafe-inline';
+        img-src 'self' data: https://res.wx.qq.com https://table-pet.oss-cn-hangzhou.aliyuncs.com https://techycubby.com https://docs.no-fish.cn https://backstage.techycubby.com pet: zj-file: audio:;
+      connect-src 'self' zj-file: http://localhost:5173;
+      font-src 'self';
+      frame-src 'self';
+      media-src 'self' zj-file: audio: pet:;
+    "/>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

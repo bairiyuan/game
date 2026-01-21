@@ -1,0 +1,720 @@
+{
+  "meta": {
+    "catchfood-game-died-left": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_3.png": {
+        "x": 0,
+        "y": 1560,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_4.png": {
+        "x": 0,
+        "y": 2080,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_5.png": {
+        "x": 0,
+        "y": 2600,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_6.png": {
+        "x": 0,
+        "y": 3120,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_7.png": {
+        "x": 0,
+        "y": 3640,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_8.png": {
+        "x": 0,
+        "y": 4160,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_9.png": {
+        "x": 0,
+        "y": 4680,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_10.png": {
+        "x": 0,
+        "y": 5200,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_11.png": {
+        "x": 0,
+        "y": 5720,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_12.png": {
+        "x": 0,
+        "y": 6240,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_13.png": {
+        "x": 0,
+        "y": 6760,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_14.png": {
+        "x": 0,
+        "y": 7280,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_15.png": {
+        "x": 0,
+        "y": 7800,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_16.png": {
+        "x": 0,
+        "y": 8320,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_17.png": {
+        "x": 0,
+        "y": 8840,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_18.png": {
+        "x": 0,
+        "y": 9360,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_19.png": {
+        "x": 0,
+        "y": 9880,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_20.png": {
+        "x": 0,
+        "y": 10400,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      }
+    },
+    "catchfood-game-died-right": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_3.png": {
+        "x": 0,
+        "y": 1560,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_4.png": {
+        "x": 0,
+        "y": 2080,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_5.png": {
+        "x": 0,
+        "y": 2600,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_6.png": {
+        "x": 0,
+        "y": 3120,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_7.png": {
+        "x": 0,
+        "y": 3640,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_8.png": {
+        "x": 0,
+        "y": 4160,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_9.png": {
+        "x": 0,
+        "y": 4680,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_10.png": {
+        "x": 0,
+        "y": 5200,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_11.png": {
+        "x": 0,
+        "y": 5720,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_12.png": {
+        "x": 0,
+        "y": 6240,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_13.png": {
+        "x": 0,
+        "y": 6760,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_14.png": {
+        "x": 0,
+        "y": 7280,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_15.png": {
+        "x": 0,
+        "y": 7800,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_16.png": {
+        "x": 0,
+        "y": 8320,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_17.png": {
+        "x": 0,
+        "y": 8840,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_18.png": {
+        "x": 0,
+        "y": 9360,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_19.png": {
+        "x": 0,
+        "y": 9880,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      },
+      "Frame_20.png": {
+        "x": 0,
+        "y": 10400,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 10920
+      }
+    },
+    "catchfood-game-move-left": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 1560
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 1560
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 1560
+      }
+    },
+    "catchfood-game-move-right": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 1560
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 1560
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 1560
+      }
+    },
+    "catchfood-game-pause-left": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 520
+      }
+    },
+    "catchfood-game-pause-right": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 520
+      }
+    },
+    "catchfood-game-start": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_3.png": {
+        "x": 0,
+        "y": 1560,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_4.png": {
+        "x": 0,
+        "y": 2080,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_5.png": {
+        "x": 0,
+        "y": 2600,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_6.png": {
+        "x": 0,
+        "y": 3120,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_7.png": {
+        "x": 0,
+        "y": 3640,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_8.png": {
+        "x": 0,
+        "y": 4160,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_9.png": {
+        "x": 0,
+        "y": 4680,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_10.png": {
+        "x": 0,
+        "y": 5200,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_11.png": {
+        "x": 0,
+        "y": 5720,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_12.png": {
+        "x": 0,
+        "y": 6240,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_13.png": {
+        "x": 0,
+        "y": 6760,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      },
+      "Frame_14.png": {
+        "x": 0,
+        "y": 7280,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 7800
+      }
+    },
+    "emerge-from-the-ground": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_3.png": {
+        "x": 0,
+        "y": 1560,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_4.png": {
+        "x": 0,
+        "y": 2080,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_5.png": {
+        "x": 0,
+        "y": 2600,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      }
+    },
+    "game-end": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_3.png": {
+        "x": 0,
+        "y": 1560,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_4.png": {
+        "x": 0,
+        "y": 2080,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_5.png": {
+        "x": 0,
+        "y": 2600,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_6.png": {
+        "x": 0,
+        "y": 3120,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_7.png": {
+        "x": 0,
+        "y": 3640,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_8.png": {
+        "x": 0,
+        "y": 4160,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_9.png": {
+        "x": 0,
+        "y": 4680,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      }
+    },
+    "game-standby": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_3.png": {
+        "x": 0,
+        "y": 1560,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_4.png": {
+        "x": 0,
+        "y": 2080,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_5.png": {
+        "x": 0,
+        "y": 2600,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      }
+    }
+  }
+}

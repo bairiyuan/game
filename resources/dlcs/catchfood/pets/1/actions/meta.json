@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "game-standby": {
+      "name": "game-standby",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 6
+    },
+    "catchfood-game-start": {
+      "name": "catchfood-game-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 15
+    },
+    "catchfood-game-move-left": {
+      "name": "catchfood-game-move-left",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 3
+    },
+    "catchfood-game-move-right": {
+      "name": "catchfood-game-move-right",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 3
+    },
+    "catchfood-game-pause-left": {
+      "name": "catchfood-game-pause-left",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 1
+    },
+    "catchfood-game-pause-right": {
+      "name": "catchfood-game-pause-right",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 1
+    },
+    "catchfood-game-died-left": {
+      "name": "catchfood-game-died-left",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 21
+    },
+    "catchfood-game-died-right": {
+      "name": "catchfood-game-died-right",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 21
+    },
+    "game-end": {
+      "name": "game-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 10
+    },
+    "emerge-from-the-ground": {
+      "name": "emerge-from-the-ground",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 6
+    }
+  }
+}

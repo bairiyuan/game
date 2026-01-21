@@ -1,0 +1,771 @@
+{
+  "meta": {
+    "power-on": {
+      "name": "power-on",
+      "isLoop": false,
+      "mustComplete": true,
+      "priority": 0,
+      "hideToolBar": false,
+      "frameCount": 106
+    },
+    "standby": {
+      "name": "standby",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 100,
+      "frameCount": 69
+    },
+    "standby-side-right-start": {
+      "name": "standby-side-right-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 100,
+      "hideToolBar": true,
+      "frameCount": 26,
+      "bloodAB": true,
+      "bloodO": true
+    },
+    "standby-side-right": {
+      "name": "standby-side-right",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 100,
+      "hideToolBar": true,
+      "perAction": ["standby-side-right-start"],
+      "frameCount": 223,
+      "bloodAB": true,
+      "bloodO": true
+    },
+    "standby-side-left-start": {
+      "name": "standby-side-left-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 100,
+      "selfPending": false,
+      "hideToolBar": true,
+      "interval": 40,
+      "frameCount": 26,
+      "bloodAB": true,
+      "bloodO": true
+    },
+    "standby-side-left": {
+      "name": "standby-side-left",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 100,
+      "selfPending": false,
+      "perAction": ["standby-side-left-start"],
+      "hideToolBar": true,
+      "interval": 40,
+      "frameCount": 224,
+      "bloodAB": true,
+      "bloodO": true
+    },
+    "dragging-start": {
+      "name": "dragging-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 100,
+      "selfPending": false,
+      "hideToolBar": true,
+      "frameCount": 9
+    },
+    "dragging": {
+      "name": "dragging",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 100,
+      "selfPending": false,
+      "perAction": ["dragging-start"],
+      "hideToolBar": true,
+      "frameCount": 30
+    },
+    "dragging-end": {
+      "name": "dragging-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 100,
+      "selfPending": false,
+      "perAction": ["dragging", "dragging-start"],
+      "hideToolBar": true,
+      "frameCount": 6
+    },
+    "talk": {
+      "name": "talk",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "hideToolBar": false,
+      "frameCount": 88
+    },
+    "interact-star": {
+      "name": "interact-star",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "hideToolBar": false,
+      "frameCount": 129
+    },
+    "greet": {
+      "name": "greet",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "frameCount": 67
+    },
+    "feedback": {
+      "name": "feedback",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "hideToolBar": true,
+      "frameCount": 262
+    },
+    "voice-input-start": {
+      "name": "voice-input-start",
+      "isLoop": false,
+      "mustComplete": true,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 100,
+      "frameCount": 9
+    },
+    "voice-input": {
+      "name": "voice-input",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": true,
+      "hideToolBar": false,
+      "perAction": ["voice-input-start"],
+      "interval": 100,
+      "frameCount": 1
+    },
+    "voice-input-end": {
+      "name": "voice-input-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": true,
+      "hideToolBar": false,
+      "perAction": ["voice-input", "voice-input-start"],
+      "interval": 100,
+      "frameCount": 7
+    },
+    "power-off": {
+      "name": "power-off",
+      "isLoop": false,
+      "mustComplete": true,
+      "priority": 0,
+      "hideToolBar": true,
+      "frameCount": 153
+    },
+    "todo-remind-start": {
+      "name": "todo-remind-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": true,
+      "interval": 125,
+      "frameCount": 21
+    },
+    "todo-remind": {
+      "name": "todo-remind",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "perAction": ["todo-remind-start"],
+      "hideToolBar": true,
+      "interval": 125,
+      "frameCount": 2
+    },
+    "todo-remind-end": {
+      "name": "todo-remind-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "perAction": ["todo-remind", "todo-remind-start"],
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 13
+    },
+    "chase-food-left-start": {
+      "name": "chase-food-left-start",
+      "isLoop": false,
+      "mustComplete": true,
+      "priority": 5,
+      "hideToolBar": true,
+      "interval": 50,
+      "frameCount": 32
+    },
+    "chase-food-left": {
+      "name": "chase-food-left",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 5,
+      "perAction": ["chase-food-left-start", "chase-food-right", "chase-food-right-start"],
+      "selfPending": true,
+      "hideToolBar": true,
+      "interval": 100,
+      "frameCount": 3
+    },
+    "chase-food-left-end": {
+      "name": "chase-food-left-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 5,
+      "perAction": [
+        "chase-food-left",
+        "chase-food-left-start",
+        "chase-food-right",
+        "chase-food-right-start"
+      ],
+      "selfPending": true,
+      "hideToolBar": true,
+      "interval": 100,
+      "frameCount": 66
+    },
+    "chase-food-right-start": {
+      "name": "chase-food-right-start",
+      "isLoop": false,
+      "mustComplete": true,
+      "priority": 5,
+      "hideToolBar": true,
+      "interval": 50,
+      "frameCount": 32
+    },
+    "chase-food-right": {
+      "name": "chase-food-right",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 5,
+      "perAction": ["chase-food-right-start", "chase-food-left", "chase-food-left-start"],
+      "selfPending": true,
+      "hideToolBar": true,
+      "interval": 100,
+      "frameCount": 3
+    },
+    "chase-food-right-end": {
+      "name": "chase-food-right-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 5,
+      "perAction": [
+        "chase-food-right",
+        "chase-food-right-start",
+        "chase-food-left",
+        "chase-food-left-start"
+      ],
+      "selfPending": true,
+      "hideToolBar": true,
+      "interval": 100,
+      "frameCount": 66
+    },
+    "chase-food-end": {
+      "name": "chase-food-end",
+      "isLoop": false,
+      "mustComplete": true,
+      "priority": 5,
+      "perAction": [
+        "chase-food-right",
+        "chase-food-right-start",
+        "chase-food-right-end",
+        "chase-food-left",
+        "chase-food-left-start",
+        "chase-food-left-end"
+      ],
+      "selfPending": true,
+      "hideToolBar": false,
+      "interval": 100,
+      "frameCount": 22
+    },
+    "offline-start": {
+      "name": "offline-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 100,
+      "selfPending": false,
+      "hideToolBar": true,
+      "interval": 40,
+      "frameCount": 152
+    },
+    "offline": {
+      "name": "offline",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 100,
+      "perAction": ["offline-start"],
+      "selfPending": false,
+      "hideToolBar": true,
+      "interval": 40,
+      "frameCount": 99
+    },
+    "offline-end": {
+      "name": "offline-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 100,
+      "perAction": ["offline", "offline-start"],
+      "selfPending": false,
+      "hideToolBar": true,
+      "interval": 40,
+      "frameCount": 22
+    },
+    "sick-start": {
+      "name": "sick-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 9,
+      "selfPending": true,
+      "hideToolBar": true,
+      "interval": 200,
+      "frameCount": 14
+    },
+    "sick": {
+      "name": "sick",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 9,
+      "perAction": ["sick-start"],
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 200,
+      "frameCount": 3
+    },
+    "hungry-start": {
+      "name": "hungry-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 9,
+      "selfPending": true,
+      "hideToolBar": true,
+      "interval": 125,
+      "frameCount": 26
+    },
+    "hungry": {
+      "name": "hungry",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 9,
+      "perAction": ["hungry-start"],
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 250,
+      "frameCount": 3
+    },
+    "show-tomato": {
+      "name": "show-tomato",
+      "isLoop": false,
+      "mustComplete": true,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": true,
+      "interval": 100,
+      "frameCount": 31
+    },
+    "tomato-end": {
+      "name": "tomato-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 34,
+      "audio": "pet-tomato-remind.mp3"
+    },
+    "think-start": {
+      "name": "think-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 7
+    },
+    "think": {
+      "name": "think",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "perAction": ["think-start"],
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 3
+    },
+    "think-end": {
+      "name": "think-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "perAction": ["think", "think-start"],
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 7
+    },
+    "sleep-start": {
+      "name": "sleep-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 40,
+      "frameCount": 52
+    },
+    "sleep": {
+      "name": "sleep",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "perAction": ["sleep-start"],
+      "hideToolBar": false,
+      "interval": 40,
+      "frameCount": 204
+    },
+    "sleep-end": {
+      "name": "sleep-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "perAction": ["sleep", "sleep-start"],
+      "hideToolBar": false,
+      "interval": 40,
+      "frameCount": 83
+    },
+    "level-up": {
+      "name": "level-up",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": true,
+      "interval": 125,
+      "frameCount": 42
+    },
+    "remind-new-email": {
+      "name": "remind-new-email",
+      "isLoop": false,
+      "mustComplete": true,
+      "priority": 15,
+      "selfPending": true,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 68
+    },
+    "get-achievement-remind": {
+      "name": "get-achievement-remind",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": true,
+      "interval": 125,
+      "frameCount": 138
+    },
+    "burrow-into-the-ground": {
+      "name": "burrow-into-the-ground",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": true,
+      "interval": 125,
+      "frameCount": 4
+    },
+    "game-standby": {
+      "name": "game-standby",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 6
+    },
+    "catchfood-game-start": {
+      "name": "catchfood-game-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 15
+    },
+    "catchfood-game-move-left": {
+      "name": "catchfood-game-move-left",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 3
+    },
+    "catchfood-game-move-right": {
+      "name": "catchfood-game-move-right",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 3
+    },
+    "catchfood-game-pause-left": {
+      "name": "catchfood-game-pause-left",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 1
+    },
+    "catchfood-game-pause-right": {
+      "name": "catchfood-game-pause-right",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 1
+    },
+    "catchfood-game-died-left": {
+      "name": "catchfood-game-died-left",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 21
+    },
+    "catchfood-game-died-right": {
+      "name": "catchfood-game-died-right",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 21
+    },
+    "game-end": {
+      "name": "game-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 10
+    },
+    "emerge-from-the-ground": {
+      "name": "emerge-from-the-ground",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 6
+    },
+    "parkour-game-start": {
+      "name": "parkour-game-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 3
+    },
+    "parkour-game-playing": {
+      "name": "parkour-game-playing",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 16
+    },
+    "parkour-game-first-jump": {
+      "name": "parkour-game-first-jump",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 8
+    },
+    "parkour-game-second-jump": {
+      "name": "parkour-game-second-jump",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 5
+    },
+    "parkour-game-run-fall": {
+      "name": "parkour-game-run-fall",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 5
+    },
+    "parkour-game-died": {
+      "name": "parkour-game-died",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 21
+    },
+
+    "whaca-mole-pet-emerge": {
+      "name": "whaca-mole-pet-emerge",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 5
+    },
+    "whaca-mole-pet-hit": {
+      "name": "whaca-mole-pet-hit",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 3
+    },
+    "whaca-mole-pet-linger": {
+      "name": "whaca-mole-pet-linger",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 5
+    },
+    "whaca-mole-pet-retreat": {
+      "name": "whaca-mole-pet-retreat",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 9
+    },
+    "whaca-mole-pet-rise2": {
+      "name": "whaca-mole-pet-rise2",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 2
+    },
+    "whaca-mole-pet-strikeable": {
+      "name": "whaca-mole-pet-strikeable",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 4
+    },
+    "whaca-mole-pet-taunt": {
+      "name": "whaca-mole-pet-taunt",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 40
+    },
+    "whaca-mole-pet-retreat-from-linger": {
+      "name": "whaca-mole-pet-retreat-from-linger",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 5
+    }
+  },
+  "base": [
+    "power-on",
+    "standby",
+    "standby-side-right-start",
+    "standby-side-right",
+    "standby-side-left-start",
+    "standby-side-left",
+    "dragging-start",
+    "dragging",
+    "dragging-end",
+    "power-off",
+    "todo-remind",
+    "chase-food-left-start",
+    "chase-food-left",
+    "chase-food-left-end",
+    "chase-food-right-start",
+    "chase-food-right",
+    "chase-food-right-end",
+    "chase-food-end",
+    "sick-start",
+    "sick",
+    "hungry-start",
+    "hungry",
+    "show-tomato",
+    "remind-new-email",
+    "think-start",
+    "think",
+    "think-end",
+    "level-up",
+    "get-achievement-remind"
+  ],
+  "action_pool": {
+    "busy": [],
+    "normal": [
+      "talk",
+      "interact-star",
+      "greet",
+      "feedback",
+      "voice-input-start",
+      "voice-input",
+      "voice-input-end"
+    ],
+    "offline": ["offline-start", "offline", "offline-end", "sleep-start", "sleep", "sleep-end"]
+  }
+}

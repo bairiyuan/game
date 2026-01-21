@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "parkour-game-start": {
+      "name": "parkour-game-start",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 3
+    },
+    "parkour-game-playing": {
+      "name": "parkour-game-playing",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 16
+    },
+    "parkour-game-first-jump": {
+      "name": "parkour-game-first-jump",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 8
+    },
+    "parkour-game-second-jump": {
+      "name": "parkour-game-second-jump",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 5
+    },
+    "parkour-game-run-fall": {
+      "name": "parkour-game-run-fall",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 5
+    },
+    "parkour-game-died": {
+      "name": "parkour-game-died",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 10,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 21
+    },
+    "emerge-from-the-ground": {
+      "name": "emerge-from-the-ground",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 6
+    },
+    "game-standby": {
+      "name": "game-standby",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 6
+    },
+    "game-end": {
+      "name": "game-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 10
+    }
+  }
+}

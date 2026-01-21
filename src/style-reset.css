@@ -1,0 +1,28 @@
+/* style-reset.css */
+/* 重置所有样式 */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 清除默认按钮样式 */
+button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* 清除列表样式 */
+ul, ol {
+  list-style: none;
+}
