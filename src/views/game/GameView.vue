@@ -56,6 +56,7 @@
 <script setup lang="ts">
 import CatchFood from '@renderer/components/game/catchFood/CatchFood.vue'
 import Parkour from '@renderer/components/game/parkour/Parkour.vue'
+import MonsterShooter from '@renderer/components/game/monsterShooter/MonsterShooter.vue'
 import PausePanel from '@renderer/components/game/PausePanel.vue'
 import EndPanel from '@renderer/components/game/EndPanel.vue'
 import Ranking from '@renderer/components/game/Ranking.vue'
@@ -79,10 +80,11 @@ type Panel =
   | typeof Ranking
   | typeof RulePanel
   | typeof ExitPanel
-type Game =  typeof CatchFood | typeof Parkour
+type Game =  typeof CatchFood | typeof Parkour | typeof MonsterShooter
 const route = useRoute()
 const catchFoodRef = ref<InstanceType<typeof CatchFood> | null>(null)
 const parkourRef = ref<InstanceType<typeof Parkour> | null>(null)
+const monsterShooterRef = ref<InstanceType<typeof MonsterShooter> | null>(null)
 const currentGame = ref<string>('')
 let gameRuleMap: Record<string, string> = {}
 gameRuleMap = {
@@ -90,13 +92,16 @@ gameRuleMap = {
     ' 鼠标左右移动控制宠物行动方向，接到食物增加积分。接到炸弹等其他物品立刻结束游戏。\n游戏开始时，食物从界面顶部随机位置下落。随着游戏时间增加，下落速度会逐渐加快，物体出现频率提升。',
     parkour:
     ' 操控桌宠自动前进，通过鼠标左键或者空格控制其跳跃，收集食物与金币，触碰障碍则游戏终止。\n游戏开始后，障碍、食物、金币从前方随机生成并靠近;随着距离增加，移动速度与障碍密度逐步提升。',
+    monstershooter:
+    ' 拖动桌宠左右移动，自动射击上方掉落的怪兽。怪兽分为小、中、大三种，击败可得分。\n怪兽碰到桌宠则游戏结束。随着时间推移，怪兽下落速度和生成频率会逐渐增加。'
 }
 let optNoticeMap: Record<string, string> = {}
 optNoticeMap = {
   catchfood:'操作鼠标左右移动接食物',
   parkour: '通过鼠标左键或者空格键跳跃',
+  monstershooter: '拖动鼠标控制移动，自动射击'
 }
-const currentGameComponent = ref<typeof CatchFood | typeof Parkour | null>(null)
+const currentGameComponent = ref<typeof CatchFood | typeof Parkour | typeof MonsterShooter | null>(null)
 const currentGameRef = ref<InstanceType<Game> | null>(null)
 const currentGameStatus = computed(() => {
   return currentGameRef.value?.currentStatus() || 'beforeStart'
@@ -274,6 +279,9 @@ onMounted(() => {
     } else if (query.game === 'parkour') {
       currentGameComponent.value = Parkour
       currentGameRef.value = parkourRef.value
+    } else if (query.game === 'monstershooter') {
+      currentGameComponent.value = MonsterShooter
+      currentGameRef.value = monsterShooterRef.value
     } else {
       currentGameComponent.value = null
     }

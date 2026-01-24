@@ -26,7 +26,7 @@ npm run dev
 
 ### 主体游戏开发
 1. 不需要编写游戏规则、分数的相关弹窗，这些在主框架里都已经搭好了
-2. 主体游戏代码放在：src/app/games/{游戏名}/{游戏名}.vue，如果有相关逻辑，也放在同级目录下
+2. 主体游戏代码放在：src/components/game/{游戏名}/{游戏名}.vue，如果有相关逻辑，也放在同级目录下
 3. src/components/GameStatus.vue下的gameList需要补充新的游戏信息
 4. src/views/game/GameView.vue下需要补充新的游戏信息的相关信息，可以全局搜索“Parkour”，仿照示例添加相关代码
 

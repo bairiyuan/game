@@ -79,6 +79,15 @@ const gameList = ref<GameItem[]>([
     callback: () => {
       console.log('跑酷游戏开始')
     }
+  },
+  {
+    name: '打小怪',
+    label: 'monstershooter',
+    iconUrl: ParkourIcon, // 暂时复用跑酷图标
+    description: '控制桌宠左右移动射击小怪兽',
+    callback: () => {
+      console.log('打小怪游戏开始')
+    }
   }
 ])
 
