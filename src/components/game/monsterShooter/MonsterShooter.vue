@@ -24,10 +24,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, nextTick } from 'vue'
+import { ActionMetadata, getActionData } from '@renderer/constants/action'
+import { usePetStore } from '@renderer/store/pet/petStore'
+import { clearAudioFromCache, playAudio, playBgm, stopBgm } from '@renderer/utils/audio'
 
 // --- 类型定义 ---
 type GameStatus = 'beforeStart' | 'start' | 'playing' | 'died' | 'paused' | 'gameOver' | 'ended'
+type ActionName = 
+  | 'game-standby'
+  | 'monster-shooter-idle'
+  | 'monster-shooter-move-left'
+  | 'monster-shooter-move-right'
+  | 'monster-shooter-shoot'
 
 interface Entity {
   x: number
@@ -38,7 +47,9 @@ interface Entity {
 }
 
 interface Pet extends Entity {
-  speed: number // 虽然是鼠标控制，但保留属性以便扩展
+  speed: number
+  actionName: ActionName
+  frameIndex: number
 }
 
 interface Bullet extends Entity {
@@ -100,9 +111,33 @@ const CONFIG = {
   }
 }
 
+// --- 资源路径定义 ---
+const basePath = '/dlcs/monstershooter' // 假设的DLC路径
+const resourcePaths = {
+  background: `${basePath}/background.png`,
+  bullet: `${basePath}/bullet.png`,
+  monster: {
+    small: `${basePath}/monster-small.png`,
+    medium: `${basePath}/monster-medium.png`,
+    large: `${basePath}/monster-large.png`
+  }
+}
+
+const audioLoop = {
+  BGM: 'monstershooter-bgm.techybuddy',
+  Shoot: 'shoot.techybuddy',
+  Explosion: 'explosion.techybuddy',
+  GameOver: 'game-over.techybuddy'
+}
+
 // --- 状态变量 ---
 const canvas = ref<HTMLCanvasElement | null>(null)
 let ctx: CanvasRenderingContext2D | null = null
+
+const petStore = usePetStore()
+const petId = ref(petStore.id)
+const imageCache = new Map<string, HTMLImageElement | null>()
+const animateMeta = ref<Map<string, ActionMetadata>>()
 
 const gameStatus = ref<GameStatus>('beforeStart')
 const score = ref(0)
@@ -115,7 +150,9 @@ const pet = ref<Pet>({
   width: CONFIG.pet.width,
   height: CONFIG.pet.height,
   color: CONFIG.pet.color,
-  speed: 0
+  speed: 0,
+  actionName: 'game-standby',
+  frameIndex: 0
 })
 
 const bullets = ref<Bullet[]>([])
@@ -132,12 +169,95 @@ let looping = false
 
 // 鼠标控制
 let isMouseDown = false
+let dragOffsetX = 0
+let dragOffsetY = 0
+
+// 动画控制
+let lastTimePetFrame = 0
+const accumulatedTime = ref(0)
+const frameDuration = ref(100)
+let currentActionCallback: (() => void) | null = null
+
+// --- 资源加载与动画函数 ---
+const getCachedImage = (src: string): Promise<HTMLImageElement | null> => {
+  if (imageCache.has(src)) {
+    return Promise.resolve(imageCache.get(src)!)
+  }
+
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+
+    img.onload = () => {
+      imageCache.set(src, img)
+      resolve(img)
+    }
+    img.onerror = () => {
+      // 资源加载失败时不 reject，而是 resolve null，避免阻塞游戏
+      console.warn(`Failed to load image: ${src}`)
+      imageCache.set(src, null)
+      resolve(null) 
+    }
+    img.src = src
+  })
+}
+
+async function initAnimate() {
+  const { meta } = await getActionData(petId.value, basePath)
+  animateMeta.value = meta
+  return animateMeta.value
+}
+
+async function preheat() {
+  // 预加载 Pet 动作帧
+  const meta = await initAnimate()
+  if (meta) {
+    const actions: ActionName[] = [
+      'game-standby', 
+      'monster-shooter-idle', 
+      'monster-shooter-move-left', 
+      'monster-shooter-move-right', 
+      'monster-shooter-shoot'
+    ]
+    for (const action of actions) {
+      const actionData = meta[action]
+      if (actionData && actionData.frameCount) {
+        for (let i = 0; i < actionData.frameCount; i++) {
+          const frameSrc = `pet://0.0.0.0${basePath}/pets/${petId.value}/actions?petId=${petId.value}&action=${actionData.name}&frame=Frame_${i}.png`
+          await getCachedImage(frameSrc)
+        }
+      }
+    }
+  }
+  
+  // 预加载其他资源
+  await getCachedImage(resourcePaths.background)
+  await getCachedImage(resourcePaths.bullet)
+  await getCachedImage(resourcePaths.monster.small)
+  await getCachedImage(resourcePaths.monster.medium)
+  await getCachedImage(resourcePaths.monster.large)
+}
+
+const playAction = (actionName: ActionName) => {
+  if (pet.value.actionName === actionName) return
+  pet.value.actionName = actionName
+  pet.value.frameIndex = 0
+  accumulatedTime.value = 0
+  frameDuration.value = animateMeta.value?.[pet.value.actionName]?.interval || 100
+
+  // 播放动作音效 (如果有)
+  if (animateMeta.value?.[actionName]?.audio) {
+    playAudio(
+      `audio://0.0.0.0/dlcs/monstershooter/pets/${petId.value}/audios/${animateMeta.value[actionName].audio}`
+    )
+  }
+}
 
 // --- 生命周期 ---
-onMounted(() => {
+onMounted(async () => {
   if (canvas.value) {
     ctx = canvas.value.getContext('2d')
-    // startGame() // 不再自动开始
+    await preheat()
     // 初始化画面
     draw()
   }
@@ -164,7 +284,12 @@ function startGame() {
   pet.value.y = canvasHeight - CONFIG.pet.height - 20
   
   lastTime = performance.now()
+  lastTimePetFrame = new Date().getTime() // 初始化动画时间
   looping = true
+  
+  playBgm(`audio://0.0.0.0${basePath}/audios/${audioLoop.BGM}`)
+  playAction('monster-shooter-idle') // 初始动作
+
   gameLoop(lastTime)
 }
 
@@ -175,6 +300,8 @@ function stopGame() {
     cancelAnimationFrame(animationId.value)
     animationId.value = null
   }
+  stopBgm()
+  playAudio(`audio://0.0.0.0${basePath}/audios/${audioLoop.GameOver}`)
   emit('game-died', score.value)
 }
 
@@ -249,6 +376,7 @@ function update(deltaTime: number, timestamp: number) {
         if (m.hp <= 0) {
           m.active = false
           score.value += m.score
+          playAudio(`audio://0.0.0.0${basePath}/audios/${audioLoop.Explosion}`)
           emit('update:score', score.value)
         }
       }
@@ -257,39 +385,122 @@ function update(deltaTime: number, timestamp: number) {
 }
 
 // --- 渲染逻辑 ---
-function draw() {
+async function draw() {
   if (!ctx) return
   
   // 清空画布
   ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 
-  // 仅在游戏进行中或结束时绘制黑色背景，避免在 beforeStart 遮挡开始按钮
-  // 或者如果需要一直显示背景，确保 GameView 的按钮 z-index 足够高（但我们不改 GameView）
-  // 折中方案：beforeStart 时透明，playing/paused/gameOver 时黑色
-  if (gameStatus.value !== 'beforeStart') {
-    ctx.fillStyle = '#000000'
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+  // 1. 绘制背景
+  // 尝试绘制图片背景，如果失败则回退到颜色
+  try {
+    const bgImg = await getCachedImage(resourcePaths.background)
+    if (bgImg) {
+      ctx.drawImage(bgImg, 0, 0, canvasWidth, canvasHeight)
+    } else {
+      throw new Error('Background image not found')
+    }
+  } catch (e) {
+    if (gameStatus.value !== 'beforeStart') {
+      ctx.fillStyle = '#000000'
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+    }
   }
 
-  // 绘制桌宠 (绿色方块)
-  drawEntity(ctx, pet.value)
+  // 2. 绘制桌宠
+  await drawPet(pet.value)
 
-  // 绘制子弹 (黄色小方块)
-  bullets.value.forEach(b => drawEntity(ctx!, b))
+  // 3. 绘制子弹
+  for (const b of bullets.value) {
+    await drawImageEntity(ctx, b, resourcePaths.bullet)
+  }
 
-  // 绘制怪兽 (不同颜色方块 + 血量显示)
-  monsters.value.forEach(m => {
-    drawEntity(ctx!, m)
-  })
+  // 4. 绘制怪兽
+  for (const m of monsters.value) {
+    let src = resourcePaths.monster.small
+    if (m.type === 'medium') src = resourcePaths.monster.medium
+    if (m.type === 'large') src = resourcePaths.monster.large
+    await drawImageEntity(ctx, m, src)
+  }
 }
 
-function drawEntity(ctx: CanvasRenderingContext2D, entity: Entity) {
-  ctx.fillStyle = entity.color
-  ctx.fillRect(entity.x, entity.y, entity.width, entity.height)
+async function drawPet(petVal: Pet) {
+  if (!ctx || !petVal) return
+
+  // 如果没有动画元数据，回退到方块绘制
+  if (!animateMeta.value || !animateMeta.value[petVal.actionName]) {
+    ctx.fillStyle = petVal.color
+    ctx.fillRect(petVal.x, petVal.y, petVal.width, petVal.height)
+    return
+  }
+
+  // 更新动画帧
+  const time = new Date().getTime()
+  const delta = time - lastTimePetFrame
+  lastTimePetFrame = time
+  accumulatedTime.value += delta
+  
+  if (accumulatedTime.value >= frameDuration.value) {
+    accumulatedTime.value -= frameDuration.value
+    const actionMeta = animateMeta.value[petVal.actionName]
+    const frameCount = actionMeta.frameCount || 1
+    
+    if (petVal.frameIndex + 1 >= frameCount) {
+      if (currentActionCallback) {
+        currentActionCallback()
+        currentActionCallback = null
+      }
+      if (actionMeta.isLoop) {
+        petVal.frameIndex = 0
+      }
+    } else {
+      petVal.frameIndex = (petVal.frameIndex + 1) % frameCount
+    }
+  }
+
+  const frameSrc = `pet://0.0.0.0${basePath}/pets/${petId.value}/actions?petId=${petId.value}&action=${petVal.actionName}&frame=Frame_${petVal.frameIndex}.png`
+  
+  try {
+    const img = await getCachedImage(frameSrc)
+    if (img) {
+      ctx.drawImage(img, petVal.x, petVal.y, petVal.width, petVal.height)
+    } else {
+      throw new Error('Frame image not found')
+    }
+  } catch (e) {
+    // 回退
+    ctx.fillStyle = petVal.color
+    ctx.fillRect(petVal.x, petVal.y, petVal.width, petVal.height)
+  }
+}
+
+async function drawImageEntity(ctx: CanvasRenderingContext2D, entity: Entity, imgSrc: string) {
+  try {
+    const img = await getCachedImage(imgSrc)
+    if (img) {
+      ctx.drawImage(img, entity.x, entity.y, entity.width, entity.height)
+    } else {
+      throw new Error('Image not found')
+    }
+  } catch (e) {
+    ctx.fillStyle = entity.color
+    ctx.fillRect(entity.x, entity.y, entity.width, entity.height)
+  }
 }
 
 // --- 辅助函数 ---
 function shoot() {
+  playAudio(`audio://0.0.0.0${basePath}/audios/${audioLoop.Shoot}`)
+  // 播放射击动作
+  playAction('monster-shooter-shoot')
+  // 射击后短暂延迟切回 idle/move (实际逻辑可能需要更复杂的动作状态机，这里简化)
+  // 如果当前是 shoot，下一帧会自动循环或通过 callback 切回，但这里 update 是按 tick 走的
+  // 简单处理：设置 callback 切回
+  currentActionCallback = () => {
+    // 恢复之前的状态或者 idle
+    playAction('monster-shooter-idle')
+  }
+
   bullets.value.push({
     x: pet.value.x + pet.value.width / 2 - CONFIG.bullet.width / 2,
     y: pet.value.y,
@@ -339,35 +550,72 @@ function checkCollision(rect1: Entity, rect2: Entity) {
 }
 
 // --- 交互事件 ---
+function getMousePos(evt: MouseEvent) {
+  if (!canvas.value) return { x: evt.clientX, y: evt.clientY }
+  const rect = canvas.value.getBoundingClientRect()
+  return {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top
+  }
+}
+
 function handleMouseDown(e: MouseEvent) {
   if (gameStatus.value === 'gameOver') {
-    // 游戏结束状态点击不直接开始，防止误触，由UI控制
     return
   }
-  if (gameStatus.value !== 'playing') return // 只有游戏中才响应鼠标
-  isMouseDown = true
-  updatePetPosition(e.clientX, e.clientY)
+  if (gameStatus.value !== 'playing') return
+
+  const { x: mouseX, y: mouseY } = getMousePos(e)
+  const petRect = pet.value
+
+  // console.log('Click:', mouseX, mouseY, 'Pet:', petRect.x, petRect.y, petRect.width, petRect.height)
+
+  if (
+    mouseX >= petRect.x &&
+    mouseX <= petRect.x + petRect.width &&
+    mouseY >= petRect.y &&
+    mouseY <= petRect.y + petRect.height
+  ) {
+    isMouseDown = true
+    // 记录点击点相对于 Pet 左上角的偏移量
+    dragOffsetX = mouseX - petRect.x
+    dragOffsetY = mouseY - petRect.y
+  }
 }
 
 function handleMouseMove(e: MouseEvent) {
   if (isMouseDown) {
-    updatePetPosition(e.clientX, e.clientY)
+    const { x: mouseX, y: mouseY } = getMousePos(e)
+    // 目标位置 = 鼠标位置 - 偏移量
+    const targetX = mouseX - dragOffsetX
+    const targetY = mouseY - dragOffsetY
+    
+    if (Math.abs(targetX - pet.value.x) > 1) { // 简单防抖
+      if (targetX > pet.value.x) {
+        playAction('monster-shooter-move-right')
+      } else {
+        playAction('monster-shooter-move-left')
+      }
+    }
+
+    movePetTo(targetX, targetY)
   }
 }
 
 function handleMouseUp() {
   isMouseDown = false
+  playAction('monster-shooter-idle')
 }
 
-function updatePetPosition(mouseX: number, mouseY: number) {
+function movePetTo(x: number, y: number) {
   // Update X
-  let newX = mouseX - pet.value.width / 2
+  let newX = x
   if (newX < 0) newX = 0
   if (newX > canvasWidth - pet.value.width) newX = canvasWidth - pet.value.width
   pet.value.x = newX
 
   // Update Y
-  let newY = mouseY - pet.value.height / 2
+  let newY = y
   if (newY < 0) newY = 0
   if (newY > canvasHeight - pet.value.height) newY = canvasHeight - pet.value.height
   pet.value.y = newY
