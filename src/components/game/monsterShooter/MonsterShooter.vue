@@ -18,7 +18,7 @@
       @mouseup="handleMouseUp"
       @mouseleave="handleMouseUp"
       tabindex="0"
-      style="display: block; cursor: crosshair;"
+      style="display: block; cursor: default;"
     ></canvas>
   </div>
 </template>
@@ -161,6 +161,7 @@ function startGame() {
   
   // 重置Pet位置
   pet.value.x = canvasWidth / 2 - pet.value.width / 2
+  pet.value.y = canvasHeight - CONFIG.pet.height - 20
   
   lastTime = performance.now()
   looping = true
@@ -345,12 +346,12 @@ function handleMouseDown(e: MouseEvent) {
   }
   if (gameStatus.value !== 'playing') return // 只有游戏中才响应鼠标
   isMouseDown = true
-  updatePetPosition(e.clientX)
+  updatePetPosition(e.clientX, e.clientY)
 }
 
 function handleMouseMove(e: MouseEvent) {
   if (isMouseDown) {
-    updatePetPosition(e.clientX)
+    updatePetPosition(e.clientX, e.clientY)
   }
 }
 
@@ -358,11 +359,18 @@ function handleMouseUp() {
   isMouseDown = false
 }
 
-function updatePetPosition(mouseX: number) {
+function updatePetPosition(mouseX: number, mouseY: number) {
+  // Update X
   let newX = mouseX - pet.value.width / 2
   if (newX < 0) newX = 0
   if (newX > canvasWidth - pet.value.width) newX = canvasWidth - pet.value.width
   pet.value.x = newX
+
+  // Update Y
+  let newY = mouseY - pet.value.height / 2
+  if (newY < 0) newY = 0
+  if (newY > canvasHeight - pet.value.height) newY = canvasHeight - pet.value.height
+  pet.value.y = newY
 }
 
 // --- 暴露给父组件的方法 ---
