@@ -34,9 +34,11 @@ type GameStatus = 'beforeStart' | 'start' | 'playing' | 'died' | 'paused' | 'gam
 type ActionName = 
   | 'game-standby'
   | 'monster-shooter-idle'
+  | 'monster-shooter-transform' // 战斗转换
   | 'monster-shooter-move-left'
   | 'monster-shooter-move-right'
   | 'monster-shooter-shoot'
+  | 'monster-shooter-fail' // 失败状态
 
 interface Entity {
   x: number
@@ -65,6 +67,16 @@ interface Monster extends Entity {
   maxHp: number
   vy: number // 向下速度
   score: number
+  active: boolean
+  hitTime: number // 受击时间，用于显示受击状态
+}
+
+interface Effect extends Entity {
+  type: 'hit' | 'explosion'
+  frameIndex: number
+  maxFrames: number
+  frameDuration: number
+  accumulatedTime: number
   active: boolean
 }
 
@@ -118,15 +130,27 @@ const resourcePaths = {
   bullet: `${basePath}/bullet.png`,
   monster: {
     small: `${basePath}/monster-small.png`,
-    medium: `${basePath}/monster-medium.png`,
-    large: `${basePath}/monster-large.png`
+    medium: {
+      normal: `${basePath}/monster-medium.png`,
+      hit: `${basePath}/monster-medium-hit.png`
+    },
+    large: {
+      normal: `${basePath}/monster-large.png`,
+      damaged1: `${basePath}/monster-large-damaged-1.png`, // 轻微受损
+      damaged2: `${basePath}/monster-large-damaged-2.png`  // 严重受损
+    }
+  },
+  effects: {
+    hit: `${basePath}/effects/hit`, // 目录，假设 hit_0.png, hit_1.png ...
+    explosion: `${basePath}/effects/explosion` // 目录
   }
 }
 
 const audioLoop = {
   BGM: 'monstershooter-bgm.techybuddy',
   Shoot: 'shoot.techybuddy',
-  Explosion: 'explosion.techybuddy',
+  Hit: 'hit.techybuddy', // 击打音效
+  Explosion: 'explosion.techybuddy', // 怪兽死亡/爆炸音效
   GameOver: 'game-over.techybuddy'
 }
 
@@ -157,6 +181,7 @@ const pet = ref<Pet>({
 
 const bullets = ref<Bullet[]>([])
 const monsters = ref<Monster[]>([])
+const effects = ref<Effect[]>([])
 
 // 游戏逻辑控制变量
 let lastTime = 0
@@ -234,8 +259,15 @@ async function preheat() {
   await getCachedImage(resourcePaths.background)
   await getCachedImage(resourcePaths.bullet)
   await getCachedImage(resourcePaths.monster.small)
-  await getCachedImage(resourcePaths.monster.medium)
-  await getCachedImage(resourcePaths.monster.large)
+  await getCachedImage(resourcePaths.monster.medium.normal)
+  await getCachedImage(resourcePaths.monster.medium.hit)
+  await getCachedImage(resourcePaths.monster.large.normal)
+  await getCachedImage(resourcePaths.monster.large.damaged1)
+  await getCachedImage(resourcePaths.monster.large.damaged2)
+  
+  // 预加载特效 (假设各3帧)
+  for (let i = 0; i < 3; i++) await getCachedImage(`${resourcePaths.effects.hit}/hit_${i}.png`)
+  for (let i = 0; i < 5; i++) await getCachedImage(`${resourcePaths.effects.explosion}/explosion_${i}.png`)
 }
 
 const playAction = (actionName: ActionName) => {
@@ -288,7 +320,12 @@ function startGame() {
   looping = true
   
   playBgm(`audio://0.0.0.0${basePath}/audios/${audioLoop.BGM}`)
-  playAction('monster-shooter-idle') // 初始动作
+  
+  // 播放战斗转换动画，结束后进入 Idle/Shoot
+  playAction('monster-shooter-transform')
+  currentActionCallback = () => {
+    playAction('monster-shooter-idle')
+  }
 
   gameLoop(lastTime)
 }
@@ -302,6 +339,7 @@ function stopGame() {
   }
   stopBgm()
   playAudio(`audio://0.0.0.0${basePath}/audios/${audioLoop.GameOver}`)
+  playAction('monster-shooter-fail') // 播放失败状态
   emit('game-died', score.value)
 }
 
@@ -367,16 +405,65 @@ function update(deltaTime: number, timestamp: number) {
   })
   monsters.value = monsters.value.filter(m => m.active)
 
-  // 6. 子弹 vs 怪兽 碰撞检测
+  // 6. 更新特效
+  effects.value.forEach(e => {
+    e.accumulatedTime += deltaTime
+    if (e.accumulatedTime >= e.frameDuration) {
+      e.accumulatedTime -= e.frameDuration
+      e.frameIndex++
+      if (e.frameIndex >= e.maxFrames) {
+        e.active = false
+      }
+    }
+  })
+  effects.value = effects.value.filter(e => e.active)
+
+  // 7. 子弹 vs 怪兽 碰撞检测
   bullets.value.forEach(b => {
     monsters.value.forEach(m => {
       if (b.active && m.active && checkCollision(b, m)) {
         b.active = false // 子弹消失
         m.hp -= 1
+        m.hitTime = timestamp // 记录受击时间
+        
+        // 播放击打音效
+        playAudio(`audio://0.0.0.0${basePath}/audios/${audioLoop.Hit}`)
+        
+        // 生成击中特效
+        effects.value.push({
+          x: m.x + m.width / 2 - 15, // 居中修正 (假设特效30x30)
+          y: m.y + m.height / 2 - 15,
+          width: 30,
+          height: 30,
+          color: '#FFFFFF',
+          type: 'hit',
+          frameIndex: 0,
+          maxFrames: 3,
+          frameDuration: 50, // 50ms 一帧
+          accumulatedTime: 0,
+          active: true
+        })
+
         if (m.hp <= 0) {
           m.active = false
           score.value += m.score
           playAudio(`audio://0.0.0.0${basePath}/audios/${audioLoop.Explosion}`)
+          
+          // 生成爆炸特效
+          effects.value.push({
+            x: m.x + m.width / 2 - 40,
+            y: m.y + m.height / 2 - 40,
+            width: 80,
+            height: 80,
+            color: '#FF4500',
+            type: 'explosion',
+            frameIndex: 0,
+            maxFrames: 5,
+            frameDuration: 80,
+            accumulatedTime: 0,
+            active: true
+          })
+          
           emit('update:score', score.value)
         }
       }
@@ -418,9 +505,32 @@ async function draw() {
   // 4. 绘制怪兽
   for (const m of monsters.value) {
     let src = resourcePaths.monster.small
-    if (m.type === 'medium') src = resourcePaths.monster.medium
-    if (m.type === 'large') src = resourcePaths.monster.large
+    
+    if (m.type === 'medium') {
+      // 中怪兽：受击状态检测 (最近 200ms 内受击显示受击图)
+      const isHit = performance.now() - m.hitTime < 200
+      src = isHit ? resourcePaths.monster.medium.hit : resourcePaths.monster.medium.normal
+    } else if (m.type === 'large') {
+      // 大怪兽：根据血量显示受损状态
+      const hpRatio = m.hp / m.maxHp
+      if (hpRatio <= 0.33) {
+        src = resourcePaths.monster.large.damaged2 // 严重受损
+      } else if (hpRatio <= 0.66) {
+        src = resourcePaths.monster.large.damaged1 // 轻微受损
+      } else {
+        src = resourcePaths.monster.large.normal
+      }
+    }
+    
     await drawImageEntity(ctx, m, src)
+  }
+
+  // 5. 绘制特效
+  for (const e of effects.value) {
+    const basePathStr = e.type === 'hit' ? resourcePaths.effects.hit : resourcePaths.effects.explosion
+    const frameName = e.type === 'hit' ? 'hit' : 'explosion'
+    const src = `${basePathStr}/${frameName}_${e.frameIndex}.png`
+    await drawImageEntity(ctx, e, src)
   }
 }
 
@@ -536,7 +646,8 @@ function spawnMonster() {
     maxHp: cfg.hp,
     score: cfg.score,
     vy: cfg.speedBase,
-    active: true
+    active: true,
+    hitTime: 0
   })
 }
 
