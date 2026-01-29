@@ -632,12 +632,74 @@ function spawnMonster() {
 
   const cfg = CONFIG.monster[type]
   
-  // 随机X坐标，确保不超出屏幕
-  const x = Math.random() * (canvasWidth - cfg.width)
+  // 尝试找到一个不重叠的位置
+  let x = 0
+  let attempts = 0
+  let valid = false
+  const maxAttempts = 15
+
+  // 临时变量
+  const newY = -cfg.height
+  const newH = cfg.height
+  const newW = cfg.width
+  const newSpeedBase = cfg.speedBase
+
+  while (attempts < maxAttempts) {
+    x = Math.random() * (canvasWidth - newW)
+    
+    // 碰撞检测 (包含未来追及检测)
+    const isOverlapping = monsters.value.some(m => {
+      if (!m.active) return false
+      
+      // 1. X轴重叠检测
+      const xOverlap = (
+        x < m.x + m.width &&
+        x + newW > m.x
+      )
+      if (!xOverlap) return false
+      
+      // 2. Y轴当前重叠检测
+      const yOverlap = (
+        newY < m.y + m.height &&
+        newY + newH > m.y
+      )
+      if (yOverlap) return true
+      
+      // 3. 追及碰撞检测 (如果新怪兽速度更快，且在同一列)
+      if (newSpeedBase > m.vy) {
+        // m 在下方
+        const gap = m.y - (newY + newH)
+        
+        if (gap > 0) {
+          const relSpeed = newSpeedBase - m.vy
+          const timeToCatch = gap / relSpeed
+          
+          // 预测追上时的位置
+          const mCurrentSpeed = m.vy + globalSpeedBonus
+          const catchY = m.y + mCurrentSpeed * timeToCatch
+          
+          // 如果追上时还在屏幕内
+          if (catchY < canvasHeight) {
+            return true
+          }
+        }
+      }
+      
+      return false
+    })
+
+    if (!isOverlapping) {
+      valid = true
+      break
+    }
+    attempts++
+  }
+
+  if (!valid) return // 放弃本次生成
 
   monsters.value.push({
     x: x,
-    y: -cfg.height, // 从屏幕上方外开始
+    y: newY, // 从屏幕上方外开始
     width: cfg.width,
     height: cfg.height,
     color: cfg.color,
