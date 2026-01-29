@@ -78,6 +78,7 @@ interface Effect extends Entity {
   frameDuration: number
   accumulatedTime: number
   active: boolean
+  target?: Monster // 绑定的目标怪兽 (用于跟随)
 }
 
 // --- Emits ---
@@ -407,6 +408,12 @@ function update(deltaTime: number, timestamp: number) {
 
   // 6. 更新特效
   effects.value.forEach(e => {
+    // 如果绑定了目标且目标存活，更新特效位置 (跟随目标)
+    if (e.target && e.target.active) {
+      e.x = e.target.x + e.target.width / 2 - e.width / 2
+      e.y = e.target.y + e.target.height / 2 - e.height / 2
+    }
+
     e.accumulatedTime += deltaTime
     if (e.accumulatedTime >= e.frameDuration) {
       e.accumulatedTime -= e.frameDuration
@@ -441,7 +448,8 @@ function update(deltaTime: number, timestamp: number) {
           maxFrames: 3,
           frameDuration: 50, // 50ms 一帧
           accumulatedTime: 0,
-          active: true
+          active: true,
+          target: m // 绑定目标怪兽
         })
 
         if (m.hp <= 0) {
