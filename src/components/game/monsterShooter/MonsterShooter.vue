@@ -101,8 +101,8 @@ const px = (val: number) => val * scale
 
 const CONFIG = {
   pet: {
-    width: px(100),
-    height: px(100),
+    width: 200, // px(100) -> 200 跟随 CatchFood/Parkour 统一大小
+    height: 200, // px(100) -> 200 跟随 CatchFood/Parkour 统一大小
     color: '#00FF00', // 绿色代表主角
     shootInterval: 200, // 射击间隔 (ms)
   },
@@ -124,6 +124,14 @@ const CONFIG = {
     speedIncreaseAmount: px(50), // 每次增加的速度
     maxSpeedCap: px(800) // 速度上限
   }
+}
+
+// 角色图片留白配置 (参考 Parkour)
+const blankSize = {
+  top: 70,
+  right: 60,
+  bottom: 55,
+  left: 60
 }
 
 // --- 资源路径定义 ---
@@ -173,12 +181,11 @@ const animationId = ref<number | null>(null)
 // 实体状态
 const pet = ref<Pet>({
   x: canvasWidth / 2 - CONFIG.pet.width / 2,
-  y: canvasHeight - CONFIG.pet.height - 20,
+  y: canvasHeight - CONFIG.pet.height - 20 + blankSize.bottom, // 修正 Y 坐标，考虑底部留白
   width: CONFIG.pet.width,
   height: CONFIG.pet.height,
   color: CONFIG.pet.color,
-  speed: 0,
-  actionName: 'game-standby',
+  actionName: 'game-standby', // 默认待机动作
   frameIndex: 0
 })
 
@@ -382,7 +389,7 @@ function startGame() {
   
   // 重置Pet位置
   pet.value.x = canvasWidth / 2 - pet.value.width / 2
-  pet.value.y = canvasHeight - CONFIG.pet.height - 20
+  pet.value.y = canvasHeight - CONFIG.pet.height - 20 + blankSize.bottom
   
   lastTime = performance.now()
   lastTimePetFrame = new Date().getTime() // 初始化动画时间
@@ -494,7 +501,7 @@ function update(deltaTime: number, timestamp: number) {
     if (m.y > canvasHeight) m.active = false
     
     // 碰撞检测: 怪兽 vs 桌宠 (游戏结束)
-    if (checkCollision(m, pet.value)) {
+    if (checkCollision(m, getPetHitBox())) {
       stopGame()
     }
   })
@@ -680,9 +687,15 @@ async function drawPet(petVal: Pet) {
       throw new Error('Frame image not found')
     }
   } catch (e) {
-    // 回退
+    // 回退：如果图片加载失败，绘制绿色方块（显示判定框）
     ctx.fillStyle = petVal.color
-    ctx.fillRect(petVal.x, petVal.y, petVal.width, petVal.height)
+    // 仅绘制判定框区域，以便调试
+    ctx.fillRect(
+      petVal.x + blankSize.left,
+      petVal.y + blankSize.top,
+      petVal.width - blankSize.left - blankSize.right,
+      petVal.height - blankSize.top - blankSize.bottom
+    )
   }
 }
 
@@ -815,13 +828,31 @@ function spawnMonster() {
   })
 }
 
-function checkCollision(rect1: Entity, rect2: Entity) {
+interface Rect {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
+// 简单的 AABB 碰撞检测
+function checkCollision(rect1: Rect, rect2: Rect) {
   return (
     rect1.x < rect2.x + rect2.width &&
     rect1.x + rect1.width > rect2.x &&
     rect1.y < rect2.y + rect2.height &&
     rect1.height + rect1.y > rect2.y
   )
+}
+
+function getPetHitBox() {
+  const p = pet.value
+  return {
+    x: p.x + blankSize.left,
+    y: p.y + blankSize.top,
+    width: p.width - blankSize.left - blankSize.right,
+    height: p.height - blankSize.top - blankSize.bottom
+  }
 }
 
 // --- 交互事件 ---
@@ -883,16 +914,22 @@ function handleMouseUp() {
 }
 
 function movePetTo(x: number, y: number) {
-  // Update X
   let newX = x
-  if (newX < 0) newX = 0
-  if (newX > canvasWidth - pet.value.width) newX = canvasWidth - pet.value.width
-  pet.value.x = newX
-
-  // Update Y
   let newY = y
-  if (newY < 0) newY = 0
-  if (newY > canvasHeight - pet.value.height) newY = canvasHeight - pet.value.height
+  
+  // 边界检查：允许图片超出屏幕，只要判定框（扣除留白后）在屏幕内
+  
+  // X轴：左侧允许移出 blankSize.left
+  if (newX < -blankSize.left) newX = -blankSize.left
+  // X轴：右侧允许移出 blankSize.right
+  if (newX > canvasWidth - pet.value.width + blankSize.right) newX = canvasWidth - pet.value.width + blankSize.right
+
+  // Y轴：顶部允许移出 blankSize.top
+  if (newY < -blankSize.top) newY = -blankSize.top
+  // Y轴：底部允许移出 blankSize.bottom
+  if (newY > canvasHeight - pet.value.height + blankSize.bottom) newY = canvasHeight - pet.value.height + blankSize.bottom
+  
+  pet.value.x = newX
   pet.value.y = newY
 }
 
