@@ -32,6 +32,8 @@ import { clearAudioFromCache, playAudio, playBgm, stopBgm } from '@renderer/util
 // --- 类型定义 ---
 type GameStatus = 'beforeStart' | 'start' | 'playing' | 'died' | 'paused' | 'gameOver' | 'ended'
 type ActionName = 
+  | 'emerge-from-the-ground' // 爬出
+  | 'game-end' // 爬走
   | 'game-standby'
   | 'monster-shooter-idle'
   | 'monster-shooter-transform' // 战斗转换
@@ -239,6 +241,8 @@ async function preheat() {
   const meta = await initAnimate()
   if (meta) {
     const actions: ActionName[] = [
+      'emerge-from-the-ground',
+      'game-end',
       'game-standby', 
       'monster-shooter-idle', 
       'monster-shooter-move-left', 
@@ -284,6 +288,41 @@ const playAction = (actionName: ActionName) => {
       `audio://0.0.0.0/dlcs/monstershooter/pets/${petId.value}/audios/${animateMeta.value[actionName].audio}`
     )
   }
+
+  // 动作回调逻辑
+  switch (actionName) {
+    case 'emerge-from-the-ground':
+      currentActionCallback = () => {
+        // 爬出后进入待机
+        playAction('game-standby')
+      }
+      break
+    case 'game-end':
+      currentActionCallback = () => {
+        // 爬走后关闭游戏
+        gameStatus.value = 'ended'
+        emit('close')
+      }
+      break
+    case 'monster-shooter-shoot':
+      // 射击动作通常短促，结束后切回 idle (在 update 中有简单处理，这里强化)
+      // 注意：update 中的逻辑可能会覆盖这里的 callback，需要协调
+      // 这里暂不处理，保留 update 中的逻辑
+      break
+    default:
+      currentActionCallback = null
+      break
+  }
+
+  // 安全检查：如果动作元数据不存在，使用定时器兜底触发回调，防止游戏流程卡死
+  if (!animateMeta.value || !animateMeta.value[actionName]) {
+    // console.warn(`Action metadata for ${actionName} not found, using fallback timer`)
+    if (currentActionCallback) {
+      const cb = currentActionCallback
+      currentActionCallback = null
+      setTimeout(cb, 500) // 0.5秒后强制执行回调
+    }
+  }
 }
 
 // --- 生命周期 ---
@@ -293,8 +332,37 @@ onMounted(async () => {
     await preheat()
     // 初始化画面
     draw()
+    
+    // 播放爬出动画
+    nextTick(() => {
+      // 聚焦 canvas
+      canvas.value?.focus()
+      playAction('emerge-from-the-ground')
+      // 开启循环以支持动画更新 (即使在 beforeStart 状态)
+      lastTimePetFrame = new Date().getTime()
+      looping = true
+      // 启动一个仅渲染的循环，不进行游戏逻辑 update
+      renderLoop()
+    })
   }
 })
+
+function renderLoop() {
+  if (!looping) return
+  
+  // 如果在游戏进行中，交由 gameLoop 接管
+  if (gameStatus.value === 'playing') return
+
+  const timestamp = performance.now()
+  // 仅更新动画相关 (accumulatedTime 在 drawPet 中更新)
+  // 这里需要手动触发 draw
+  draw()
+  
+  // 如果是 beforeStart, gameOver, ended 状态，继续渲染动画
+  if (['beforeStart', 'gameOver', 'ended'].includes(gameStatus.value)) {
+    animationId.value = requestAnimationFrame(renderLoop)
+  }
+}
 
 onBeforeUnmount(() => {
   if (animationId.value) {
@@ -333,15 +401,41 @@ function startGame() {
 
 function stopGame() {
   gameStatus.value = 'gameOver'
-  looping = false
+  // 保持 looping 为 true 以播放失败动画，但切换到 renderLoop
+  looping = true
+  lastTimePetFrame = new Date().getTime()
+  
   if (animationId.value) {
     cancelAnimationFrame(animationId.value)
     animationId.value = null
   }
+  // 启动渲染循环
+  renderLoop()
+
   stopBgm()
   playAudio(`audio://0.0.0.0${basePath}/audios/${audioLoop.GameOver}`)
   playAction('monster-shooter-fail') // 播放失败状态
   emit('game-died', score.value)
+}
+
+function close() {
+  // 1. 停止游戏逻辑更新
+  gameStatus.value = 'ended'
+  
+  // 2. 确保开启渲染循环，以便播放爬走动画
+  looping = true
+  lastTimePetFrame = new Date().getTime()
+  
+  // 切换到 renderLoop
+  if (animationId.value) {
+    cancelAnimationFrame(animationId.value)
+    animationId.value = null
+  }
+  renderLoop()
+
+  // 3. 播放爬走动画
+  playAction('game-end')
+  // 动画结束后会触发 emit('close')
 }
 
 // --- 游戏主循环 ---
@@ -827,24 +921,15 @@ function resumeGame() {
   }
 }
 
-function close() {
-  gameStatus.value = 'ended'
-  looping = false
-  if (animationId.value) {
-    cancelAnimationFrame(animationId.value)
-    animationId.value = null
-  }
-  emit('close')
-}
-
 defineExpose({
-   startGame,
-   restartGame: startGame, // 别名
-   pauseGame,
-   resumeGame,
-   close,
-   currentStatus
- })
+  startGame,
+  stopGame,
+  restartGame: startGame,
+  pauseGame,
+  resumeGame,
+  close,
+  currentStatus
+})
 </script>
 
 <style scoped>

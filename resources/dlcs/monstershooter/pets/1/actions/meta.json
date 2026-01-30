@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "game-standby": {
+      "name": "game-standby",
+      "isLoop": true,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 6
+    },
+    "game-end": {
+      "name": "game-end",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 10
+    },
+    "emerge-from-the-ground": {
+      "name": "emerge-from-the-ground",
+      "isLoop": false,
+      "mustComplete": false,
+      "priority": 0,
+      "selfPending": false,
+      "hideToolBar": false,
+      "interval": 125,
+      "frameCount": 6
+    }
+  }
+}

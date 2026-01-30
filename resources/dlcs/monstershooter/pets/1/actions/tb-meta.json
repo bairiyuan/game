@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "emerge-from-the-ground": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_3.png": {
+        "x": 0,
+        "y": 1560,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_4.png": {
+        "x": 0,
+        "y": 2080,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_5.png": {
+        "x": 0,
+        "y": 2600,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      }
+    },
+    "game-end": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_3.png": {
+        "x": 0,
+        "y": 1560,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_4.png": {
+        "x": 0,
+        "y": 2080,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_5.png": {
+        "x": 0,
+        "y": 2600,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_6.png": {
+        "x": 0,
+        "y": 3120,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_7.png": {
+        "x": 0,
+        "y": 3640,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_8.png": {
+        "x": 0,
+        "y": 4160,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      },
+      "Frame_9.png": {
+        "x": 0,
+        "y": 4680,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 5200
+      }
+    },
+    "game-standby": {
+      "Frame_0.png": {
+        "x": 0,
+        "y": 0,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_1.png": {
+        "x": 0,
+        "y": 520,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_2.png": {
+        "x": 0,
+        "y": 1040,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_3.png": {
+        "x": 0,
+        "y": 1560,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_4.png": {
+        "x": 0,
+        "y": 2080,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      },
+      "Frame_5.png": {
+        "x": 0,
+        "y": 2600,
+        "width": 520,
+        "height": 520,
+        "sourceW": 520,
+        "sourceH": 3120
+      }
+    }
+  }
+}
